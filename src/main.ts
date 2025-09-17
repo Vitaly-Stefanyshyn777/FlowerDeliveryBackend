@@ -27,7 +27,12 @@ async function bootstrap() {
 
   app.use(
     cors({
-      origin: process.env.FRONTEND_URL,
+      origin: [
+        'http://localhost:3000',
+        'https://flower-delivery-blush.vercel.app',
+        'https://flower-delivery.vercel.app',
+        process.env.FRONTEND_URL,
+      ].filter(Boolean),
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
       credentials: true,
     }),
