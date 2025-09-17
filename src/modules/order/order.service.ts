@@ -21,26 +21,27 @@ export class OrderService {
           .toJSDate()
       : DateTime.fromISO(dto.deliveryAt).toUTC().toJSDate();
 
-    return this.prisma.$transaction(async (tx) => {
-      const order = await tx.order.create({
-        data: {
-          shopId: dto.shopId,
-          totalPrice: dto.totalPrice,
-          deliveryAddr: dto.deliveryAddr,
-          deliveryAtUTC,
-          items: {
-            create: dto.items.map((i) => ({
-              productId: i.productId,
-              name: i.name,
-              qty: i.qty,
-              price: i.price,
-            })),
+    return this.prisma
+      .$transaction([
+        this.prisma.order.create({
+          data: {
+            shopId: dto.shopId,
+            totalPrice: dto.totalPrice,
+            deliveryAddr: dto.deliveryAddr,
+            deliveryAtUTC: deliveryAtUTC,
+            items: {
+              create: dto.items.map((i) => ({
+                productId: i.productId,
+                name: i.name,
+                qty: i.qty,
+                price: i.price,
+              })),
+            },
           },
-        },
-        include: { shop: true, items: true },
-      });
-      return order;
-    });
+          include: { shop: true, items: true },
+        }),
+      ])
+      .then(([order]) => order);
   }
 
   async findAll(params: { page?: number; limit?: number }) {
