@@ -15,6 +15,7 @@ import { GLOBAL_CONFIG } from '../../configs/global.config';
 import { LoggerModule } from '../logger/logger.module';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
+import { RootController } from './root.controller';
 import { LoggerMiddleware } from '../../middlewares/logger.middleware';
 
 @Module({
@@ -31,7 +32,7 @@ import { LoggerMiddleware } from '../../middlewares/logger.middleware';
     CouponModule,
     ConfigModule.forRoot({ isGlobal: true, load: [() => GLOBAL_CONFIG] }),
   ],
-  controllers: [AppController],
+  controllers: [AppController, RootController],
   providers: [AppService],
   exports: [],
 })
