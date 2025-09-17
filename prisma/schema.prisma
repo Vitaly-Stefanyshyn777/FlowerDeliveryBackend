@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Shop {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  address   String
+  latitude  Float?
+  longitude Float?
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id            String      @id @default(uuid())
+  shopId        String
+  shop          Shop        @relation(fields: [shopId], references: [id])
+  totalPrice    Float
+  deliveryAddr  String
+  deliveryAtUTC DateTime
+  items         OrderItem[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model Product {
+  id          String      @id @default(uuid())
+  name        String      @unique
+  description String?
+  price       Float
+  priceOriginal Float?
+  category    String?
+  imageUrl    String?
+  isActive    Boolean     @default(true)
+  isHit       Boolean     @default(false)
+  isNew       Boolean     @default(false)
+  items       OrderItem[]
+  coupons     Coupon[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([category])
+  @@index([createdAt])
+  @@index([price])
+  @@index([isHit])
+  @@index([isNew])
+  @@index([isActive])
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  name      String
+  qty       Int
+  price     Float
+}
+
+model Coupon {
+  id              String    @id @default(uuid())
+  code            String    @unique
+  description     String?
+  discountPercent Int?
+  discountAmount  Float?
+  startsAt        DateTime?
+  endsAt          DateTime?
+  isActive        Boolean   @default(true)
+  maxRedemptions  Int?
+  usedRedemptions Int       @default(0)
+  minOrderTotal   Float?
+  imageUrl        String?
+  appliesToProductId String?
+  appliesToCategory  String?
+  appliesToProduct Product? @relation(fields: [appliesToProductId], references: [id])
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([isActive])
+  @@index([endsAt])
+  @@index([startsAt])
+  @@index([appliesToProductId])
+  @@index([appliesToCategory])
+}
+
+// Legacy models preserved for existing auth/user/post code
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  password String
+  name     String?
+  Post     Post[]
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean? @default(false)
+  authorId  Int?
+  User      User?    @relation(fields: [authorId], references: [id])
+}
