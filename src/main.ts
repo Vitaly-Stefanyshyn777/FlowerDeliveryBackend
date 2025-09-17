@@ -35,6 +35,25 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
+  // Додаємо middleware для кореневого маршруту
+  app.use('/', (req, res, next) => {
+    if (req.path === '/' && (req.method === 'GET' || req.method === 'HEAD')) {
+      const data = {
+        message: 'Flower Delivery Backend API',
+        api: '/api/v1',
+        docs: '/api',
+        status: 'OK',
+      };
+      
+      if (req.method === 'HEAD') {
+        return res.status(200).end();
+      }
+      
+      return res.json(data);
+    }
+    next();
+  });
+
   app.useGlobalPipes(new ValidationPipe());
 
   const configService = app.get<ConfigService>(ConfigService);

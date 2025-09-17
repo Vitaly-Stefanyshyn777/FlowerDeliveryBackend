@@ -16,7 +16,6 @@ import { LoggerModule } from '../logger/logger.module';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
 import { LoggerMiddleware } from '../../middlewares/logger.middleware';
-import { RootMiddleware } from '../../middlewares/root.middleware';
 
 @Module({
   imports: [
@@ -38,7 +37,6 @@ import { RootMiddleware } from '../../middlewares/root.middleware';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(RootMiddleware).forRoutes('/');
-    consumer.apply(LoggerMiddleware).forRoutes('*');
+    consumer.apply(LoggerMiddleware).forRoutes('/api/*');
   }
 }
