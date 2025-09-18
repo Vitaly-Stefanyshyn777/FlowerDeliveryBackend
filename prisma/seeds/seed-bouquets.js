@@ -36,12 +36,20 @@ async function main() {
         'https://images.unsplash.com/photo-1487537023671-8dce1a785863?w=900',
     },
     {
-      name: 'Букет “Лавандовий бриз”',
+      name: 'Букет "Лавандовий бриз"',
       description: 'Лаванда, рожеві троянди, матіола',
       price: 1390,
       category: 'Букети',
       imageUrl:
         'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=900',
+    },
+    {
+      name: 'Букет "Романтичний сюрприз"',
+      description: 'Мікс кольорових квітів у стильній композиції',
+      price: 1650,
+      category: 'Букети',
+      imageUrl:
+        'https://res.cloudinary.com/dwbmbkkqr/image/upload/v1758207250/flowers/w3e1aty7v3vckr5ifnbj.png',
     },
   ];
 

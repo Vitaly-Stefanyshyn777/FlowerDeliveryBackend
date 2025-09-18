@@ -11,6 +11,7 @@ import { ShopModule } from '../shop/shop.module';
 import { ProductModule } from '../product/product.module';
 import { NovaPoshtaModule } from '../nova-poshta/nova-poshta.module';
 import { CouponModule } from '../coupon/coupon.module';
+import { UploadModule } from '../upload/upload.module';
 import { GLOBAL_CONFIG } from '../../configs/global.config';
 import { LoggerModule } from '../logger/logger.module';
 import { AppService } from './app.service';
@@ -29,6 +30,7 @@ import { LoggerMiddleware } from '../../middlewares/logger.middleware';
     ProductModule,
     NovaPoshtaModule,
     CouponModule,
+    UploadModule,
     ConfigModule.forRoot({ isGlobal: true, load: [() => GLOBAL_CONFIG] }),
   ],
   controllers: [AppController],
